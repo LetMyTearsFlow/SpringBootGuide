@@ -8,12 +8,11 @@
         <version>4.0.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.sandbox</groupId>
-    <artifactId>SpringBootGuide</artifactId>
+    <groupId>org.cqlin</groupId>
+    <artifactId>PrimaryQualifier</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>SpringBootGuide</name>
-    <description>SpringBootGuide</description>
+    <name>PrimaryQualifier</name>
+    <description>PrimaryQualifier</description>
     <url/>
     <licenses>
         <license/>
