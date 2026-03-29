@@ -8,6 +8,7 @@ class BeanLifeCycleDemoApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println("BeanLifeCycleDemoApplicationTests.contextLoads");
     }
 
 }
