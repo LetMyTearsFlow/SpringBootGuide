@@ -1,13 +1,18 @@
 package org.cqlin.staticproxydemo;
 
+import org.cqlin.staticproxydemo.proxy.UserServiceProxy;
+import org.cqlin.staticproxydemo.service.UserService;
+import org.cqlin.staticproxydemo.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 class StaticProxyDemoApplicationTests {
 
     @Test
-    void contextLoads() {
+    void test() {
+        UserService userService = new UserServiceImpl();
+        UserService proxy = new UserServiceProxy(userService);
+
+        proxy.addUser("L");
     }
 
 }
