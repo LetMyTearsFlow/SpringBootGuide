@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @SpringBootTest
 class JdbcTemplateDemoApplicationTests {
@@ -19,6 +18,13 @@ class JdbcTemplateDemoApplicationTests {
     void testBookDaoInsert() {
         Book book = new Book("安娜·卡列尼娜", "列夫·托尔斯泰", BigDecimal.valueOf(50), 10, 0L, 0);
         bookDao.insert(book);
+    }
+
+    @Test
+    void testBookDaoFindById() {
+        int id = 1;
+        Book book = bookDao.findById(id);
+        System.out.println(book);
     }
 
 }

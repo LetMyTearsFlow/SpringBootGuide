@@ -26,4 +26,8 @@ public class Book {
         this.categoryId = categoryId;
         this.status = status;
     }
+
+    public Book() {
+
+    }
 }
