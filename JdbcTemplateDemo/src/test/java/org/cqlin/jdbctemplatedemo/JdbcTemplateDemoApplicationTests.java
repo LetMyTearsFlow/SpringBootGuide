@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @SpringBootTest
 class JdbcTemplateDemoApplicationTests {
@@ -25,6 +26,14 @@ class JdbcTemplateDemoApplicationTests {
         int id = 1;
         Book book = bookDao.findById(id);
         System.out.println(book);
+    }
+
+    @Test
+    void testBookDaoFindAll() {
+        List<Book> books = bookDao.findAll();
+        for(Book book : books) {
+            System.out.println(book);
+        }
     }
 
 }
