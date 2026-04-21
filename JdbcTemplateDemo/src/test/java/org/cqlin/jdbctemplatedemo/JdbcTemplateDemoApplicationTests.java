@@ -36,4 +36,11 @@ class JdbcTemplateDemoApplicationTests {
         }
     }
 
+    @Test
+    void testBookDaoUpdate() {
+        Book book = bookDao.findById(1);
+        book.setStock(book.getStock() + 1);
+        bookDao.update(book);
+    }
+
 }

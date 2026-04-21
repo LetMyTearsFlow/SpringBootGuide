@@ -23,6 +23,7 @@ public class BookDao {
         book.setStock((int) rs.getLong("stock"));
         book.setStatus(rs.getInt("status"));
         book.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        book.setCategoryId(rs.getLong("category_id"));
         return book;
     };
 
@@ -40,11 +41,19 @@ public class BookDao {
 
     /**
      * find all book from book database
+     *
      * @return all books from book database
      */
     public List<Book> findAll() {
         String sql = "select * from book";
         return jdbcTemplate.query(sql, bookRowMapper);
+    }
+
+    public void update(Book book) {
+        String sql = "update book set title=?, author=?, price=?, stock=?, category_id=?, " +
+                "status=?, created_at=? where id=?";
+        jdbcTemplate.update(sql, book.getTitle(), book.getAuthor(), book.getPrice(), book.getStock(),
+                book.getCategoryId(), book.getStatus(), book.getCreatedAt(), book.getId());
     }
 
 }
