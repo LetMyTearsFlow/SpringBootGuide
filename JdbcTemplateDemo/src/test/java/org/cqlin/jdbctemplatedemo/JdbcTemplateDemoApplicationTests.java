@@ -18,7 +18,8 @@ class JdbcTemplateDemoApplicationTests {
     @Test
     void testBookDaoInsert() {
         Book book = new Book("安娜·卡列尼娜", "列夫·托尔斯泰", BigDecimal.valueOf(50), 10, 0L, 0);
-        bookDao.insert(book);
+        int id = bookDao.insert(book);
+        System.out.println("插入的书本id为： " + id);
     }
 
     @Test
@@ -41,6 +42,15 @@ class JdbcTemplateDemoApplicationTests {
         Book book = bookDao.findById(1);
         book.setStock(book.getStock() + 1);
         bookDao.update(book);
+    }
+
+    @Test
+    void testBookDaoDeleteById() {
+        Book book = new Book("我是哈基米","夏目漱石",BigDecimal.valueOf(30.21),20,2L,1);
+        int id = bookDao.insert(book);
+        System.out.println("插入id为" + id + "的书");
+        bookDao.deleteById(id);
+        System.out.println("删除id为" + id + "的书");
     }
 
 }

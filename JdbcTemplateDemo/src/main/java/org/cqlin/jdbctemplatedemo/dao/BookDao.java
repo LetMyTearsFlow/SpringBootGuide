@@ -4,8 +4,12 @@ import org.cqlin.jdbctemplatedemo.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Component
@@ -27,10 +31,24 @@ public class BookDao {
         return book;
     };
 
-    public void insert(Book book) {
+    public int insert(Book book) {
         String sql = "insert into book(title, author, price, stock, category_id, status) values(?,?,?,?,?,?)";
-        jdbcTemplate.update(sql, book.getTitle(), book.getAuthor(), book.getPrice(),
-                book.getStock(), book.getCategoryId(), book.getStatus());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(
+                    sql,
+                    Statement.RETURN_GENERATED_KEYS
+            );
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getAuthor());
+            ps.setBigDecimal(3, book.getPrice());
+            ps.setInt(4, book.getStock());
+            ps.setInt(5, Math.toIntExact(book.getCategoryId()));
+            ps.setString(6, String.valueOf(book.getStatus()));
+
+            return ps;
+        },keyHolder);
+        return keyHolder.getKey().intValue();
     }
 
     public Book findById(int id) {
@@ -54,6 +72,11 @@ public class BookDao {
                 "status=?, created_at=? where id=?";
         jdbcTemplate.update(sql, book.getTitle(), book.getAuthor(), book.getPrice(), book.getStock(),
                 book.getCategoryId(), book.getStatus(), book.getCreatedAt(), book.getId());
+    }
+
+    public void deleteById(int id) {
+        String sql = "delete from book where id=?";
+        jdbcTemplate.update(sql, id);
     }
 
 }
