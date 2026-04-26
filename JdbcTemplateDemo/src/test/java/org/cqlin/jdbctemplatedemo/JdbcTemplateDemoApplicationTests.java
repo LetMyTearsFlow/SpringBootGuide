@@ -78,4 +78,12 @@ class JdbcTemplateDemoApplicationTests {
         int id = 114514; // id that not exist
         assertNull(categoryDao.findById(id));
     }
+
+    @Test
+    void testCategoryDaoFindAll() {
+        List<Category> all = categoryDao.findAll();
+        for (Category category : all) {
+            System.out.println(category);
+        }
+    }
 }

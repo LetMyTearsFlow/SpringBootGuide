@@ -40,7 +40,8 @@ public class CategoryDao {
     }
 
     public List<Category> findAll() {
-        return null;
+        String sql = "select * from category";
+        return jdbcTemplate.query(sql, categoryRowMapper);
     }
 
     public void update(Category category) {
