@@ -1,7 +1,9 @@
 package org.cqlin.jdbctemplatedemo;
 
 import org.cqlin.jdbctemplatedemo.dao.BookDao;
+import org.cqlin.jdbctemplatedemo.dao.CategoryDao;
 import org.cqlin.jdbctemplatedemo.entity.Book;
+import org.cqlin.jdbctemplatedemo.entity.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +16,9 @@ class JdbcTemplateDemoApplicationTests {
 
     @Autowired
     BookDao bookDao;
+
+    @Autowired
+    CategoryDao categoryDao;
 
     @Test
     void testBookDaoInsert() {
@@ -51,6 +56,12 @@ class JdbcTemplateDemoApplicationTests {
         System.out.println("插入id为" + id + "的书");
         bookDao.deleteById(id);
         System.out.println("删除id为" + id + "的书");
+    }
+
+    @Test
+    void testCategoryDaoInsert() {
+        Category category = new Category("React", "React技术相关图书");
+        categoryDao.insert(category);
     }
 
 }
