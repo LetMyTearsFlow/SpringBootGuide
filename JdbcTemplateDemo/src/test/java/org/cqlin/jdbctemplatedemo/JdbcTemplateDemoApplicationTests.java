@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class JdbcTemplateDemoApplicationTests {
 
@@ -64,4 +66,16 @@ class JdbcTemplateDemoApplicationTests {
         categoryDao.insert(category);
     }
 
+    @Test
+    void testCategoryDaoFindById() {
+        int id = 1;
+        Category query = categoryDao.findById(1);
+        System.out.println(query);
+    }
+
+    @Test
+    void testCategoryDaoFindById2() {
+        int id = 114514; // id that not exist
+        assertNull(categoryDao.findById(id));
+    }
 }
