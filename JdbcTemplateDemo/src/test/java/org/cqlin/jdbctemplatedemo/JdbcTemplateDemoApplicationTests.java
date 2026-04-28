@@ -86,4 +86,11 @@ class JdbcTemplateDemoApplicationTests {
             System.out.println(category);
         }
     }
+
+    @Test
+    void testCategoryDaoUpdate() {
+        Category category = categoryDao.findById(1);
+        category.setCreateTime(category.getCreateTime().plusDays(1L));
+        categoryDao.update(category);
+    }
 }

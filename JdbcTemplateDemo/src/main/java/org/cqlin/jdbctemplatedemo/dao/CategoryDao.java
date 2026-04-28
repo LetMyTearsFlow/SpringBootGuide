@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Component
 public class CategoryDao {
@@ -45,7 +44,8 @@ public class CategoryDao {
     }
 
     public void update(Category category) {
-
+        String sql = "update category set name=?, description=?, created_at=? where id=?";
+        jdbcTemplate.update(sql, category.getName(), category.getDescription(), category.getCreateTime(), category.getId());
     }
 
     public void deleteById(int id) {
