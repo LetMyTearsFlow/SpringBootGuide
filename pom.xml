@@ -14,6 +14,23 @@
     <packaging>pom</packaging>
     <name>SpringBootGuide</name>
     <description>SpringBootGuide</description>
+
+    <modules>
+        <module>AopJointPointInfoDemo</module>
+        <module>AwareDemo</module>
+        <module>BeanLifeCycleDemo</module>
+        <module>DynamicProxyDemo</module>
+        <module>InjectionDemo</module>
+        <module>JdbcTemplateDemo</module>
+        <module>PointcutExpressionDemo</module>
+        <module>PrimaryQualifier</module>
+        <module>PropertySourceDemo</module>
+        <module>ResourceAutowired</module>
+        <module>ResourceUtilsDemo</module>
+        <module>StaticProxyDemo</module>
+        <module>ValueDemo</module>
+    </modules>
+
     <url/>
     <licenses>
         <license/>
