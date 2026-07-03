@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RequestMappingLimitController {
 
     // 请求方式限定
-    @RequestMapping(value = "/test01", method= {RequestMethod.POST, RequestMethod.PATCH})
+    @RequestMapping(value = "/test01", method = {RequestMethod.POST, RequestMethod.PATCH})
     public String test01() {
         return "POST & PATCH method";
     }
@@ -33,7 +33,7 @@ public class RequestMappingLimitController {
     }
 
     // 返回数据类型确定
-    @RequestMapping(value = "/test05", produces="text/html")
+    @RequestMapping(value = "/test05", produces = "text/html")
     public String test05() {
         return "<h1>Produce limit<h1>";
     }
