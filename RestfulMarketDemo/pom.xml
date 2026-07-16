@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.cqlin</groupId>
-    <artifactId>MarketDemo</artifactId>
+    <artifactId>RestfulMarketDemo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>MarketDemo</name>
     <description>MarketDemo</description>

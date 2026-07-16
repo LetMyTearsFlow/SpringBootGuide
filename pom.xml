@@ -29,6 +29,7 @@
         <module>ResourceUtilsDemo</module>
         <module>StaticProxyDemo</module>
         <module>ValueDemo</module>
+        <module>RestfulMarketDemo</module>
     </modules>
 
     <url/>
