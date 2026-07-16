@@ -58,7 +58,7 @@ public class UserDao {
         jdbcTemplate.update(sql, id);
     }
 
-    public List<User> findAllUser() {
+    public List<User> findAllUsers() {
         String sql = "select * from user";
         return jdbcTemplate.query(sql, userRowMapper);
     }
