@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 public class UserDaoTest {
 
@@ -15,7 +17,7 @@ public class UserDaoTest {
     @Test
     public void testCreateUser() {
         User user = new User();
-        user.setUsername("user0721");
+        user.setUsername("user0722");
         user.setPhone("1145141919810");
         user.setPassword("passw0de");
         userDao.createUser(user);
@@ -34,5 +36,13 @@ public class UserDaoTest {
         user.setPassword("123456");
         user.setId(1L);
         userDao.updateUser(user);
+    }
+
+    @Test
+    void testFindAllUsers() {
+        List<User> allUsers = userDao.findAllUsers();
+        for (User user : allUsers) {
+            System.out.println(user.getUsername());
+        }
     }
 }
