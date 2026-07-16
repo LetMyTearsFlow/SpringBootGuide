@@ -47,5 +47,8 @@ class OrderDaoTest {
 
     @Test
     void findAllOrders() {
+        for (Order order : orderDao.findAllOrders()) {
+            System.out.println(order.getId());
+        }
     }
 }
