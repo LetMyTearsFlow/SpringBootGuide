@@ -40,24 +40,34 @@ public class GoodsDao {
     public void updateGoods(Goods goods) {
         Long id = goods.getId();
         Goods old = findGoodsById(id);
-        if(goods.getUserId() != null) {
+        if (goods.getUserId() != null) {
             old.setUserId(goods.getUserId());
         }
-        if(goods.getName() != null) {
+        if (goods.getName() != null) {
             old.setName(goods.getName());
         }
-        if(goods.getDescription() != null) {
+        if (goods.getDescription() != null) {
             old.setDescription(goods.getDescription());
         }
-        if(goods.getPrice() != null) {
+        if (goods.getPrice() != null) {
             old.setPrice(goods.getPrice());
         }
-        if(goods.getStatus() != null) {
+        if (goods.getStatus() != null) {
             old.setStatus(goods.getStatus());
         }
         String sql = "update goods set user_id=?, name=?, description=?, " +
                 "price=?, status=? where id=?";
         jdbcTemplate.update(sql, old.getUserId(), old.getName(), old.getDescription(),
                 old.getPrice(), old.getStatus(), old.getId());
+    }
+
+    public List<Goods> findAllGoods() {
+        String sql = "select * from goods";
+        return jdbcTemplate.query(sql, goodsRowMapper);
+    }
+
+    public void deleteGoodsById(Long id) {
+        String sql = "delete from goods where id=?";
+        jdbcTemplate.update(sql, id);
     }
 }
