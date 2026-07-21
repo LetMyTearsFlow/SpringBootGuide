@@ -23,6 +23,15 @@ public class Result<T>{
         return result;
     }
 
+    public static <T> Result<T> success() {
+        Result<T> result=new Result<>();
+
+        result.code=200;
+        result.message="success";
+
+        return result;
+    }
+
 
     public static Result error(String msg){
 
