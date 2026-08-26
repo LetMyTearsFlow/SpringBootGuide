@@ -31,6 +31,9 @@ public record UserCreateRequest(
         @NotNull(message="{user.score.not-null}")
         @Min(value = 0, message="{user.score.min}")
         @Max(value = 100, message="{user.score.max}")
-        Integer score
+        Integer score,
+
+        @Pattern(regexp="\\d{17}[0-9xX]", message="{user.idCard.pattern}")
+        String idCard
 ) {
 }
