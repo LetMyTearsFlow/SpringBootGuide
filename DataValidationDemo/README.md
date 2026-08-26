@@ -82,7 +82,7 @@ DTO 中的写法：
 
 ```java
 @Size(min = 3, max = 20, message = "{user.username.size}")
-String username
+String username;
 ```
 
 外层 `{user.username.size}` 表示从消息配置文件查找这个键。配置值中的 `{min}`、`{max}`、`{value}` 会使用注解属性替换：
@@ -139,7 +139,9 @@ URL：`http://localhost:8080/api/users`
   "email": "spring@example.com",
   "age": 20,
   "password": "springboot123",
-  "phone": "13812345678"
+  "phone": "13812345678",
+  "nickname": "2b",
+  "score": 67
 }
 ```
 

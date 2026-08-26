@@ -81,7 +81,9 @@ class DataValidationDemoApplicationTests {
                                   "email": "spring@example.com",
                                   "age": 20,
                                   "password": "springboot123",
-                                  "phone": "13812345678"
+                                  "phone": "13812345678",
+                                  "nickname": "2b",
+                                  "score": 67
                                 }
                                 """))
                 .andExpect(status().isOk())

@@ -1,11 +1,6 @@
 package org.cqlin.datavalidationdemo.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.cqlin.datavalidationdemo.validation.ValidPhone;
 
 public record UserCreateRequest(
@@ -28,6 +23,14 @@ public record UserCreateRequest(
 
         @NotBlank(message = "{user.phone.not-blank}")
         @ValidPhone
-        String phone
+        String phone,
+
+        @Size(min = 2, max = 30, message="{user.nickname.length}")
+        String nickname,
+
+        @NotNull(message="{user.score.not-null}")
+        @Min(value = 0, message="{user.score.min}")
+        @Max(value = 100, message="{user.score.max}")
+        Integer score
 ) {
 }
