@@ -131,7 +131,7 @@ cd DataValidationDemo
 
 URL：`http://localhost:8080/api/users`
 
-合法请求：
+合法请求（练习题修改前）：
 
 ```json
 {

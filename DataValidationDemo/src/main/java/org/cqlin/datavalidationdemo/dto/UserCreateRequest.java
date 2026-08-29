@@ -1,5 +1,6 @@
 package org.cqlin.datavalidationdemo.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import org.cqlin.datavalidationdemo.validation.ValidPhone;
 
@@ -34,6 +35,10 @@ public record UserCreateRequest(
         Integer score,
 
         @Pattern(regexp="\\d{17}[0-9xX]", message="{user.idCard.pattern}")
-        String idCard
+        String idCard,
+
+        @Valid
+        @NotNull(message = "{user.address.not-null}")
+        AddressRequest address
 ) {
 }

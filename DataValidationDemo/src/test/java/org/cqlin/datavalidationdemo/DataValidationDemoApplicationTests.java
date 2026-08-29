@@ -205,9 +205,52 @@ class DataValidationDemoApplicationTests {
     }
 
     /**
+     * Verifies that cascaded validation returns the complete nested field path.
+     */
+    @Test
+    void nestedAddressCityValidationReturnsFullFieldPath() throws Exception {
+        String request = requestWithAddress(
+                "2b",
+                67,
+                VALID_ID_CARD_PREFIX + "X",
+                "Fujian",
+                "",
+                "No. 1 Example Road");
+
+        mockMvc.perform(post(GLOBAL_VALIDATION_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept-Language", "zh-CN")
+                        .content(request))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.data[?(@.field == 'address.city')].field")
+                        .value("address.city"))
+                .andExpect(jsonPath("$.data[?(@.field == 'address.city')].message")
+                        .value("地址的城市不能为空"));
+    }
+
+    /**
      * Builds a valid request while allowing one exercise field to vary per test.
      */
     private String validRequest(String nickname, Integer score, String idCard) {
+        return requestWithAddress(
+                nickname,
+                score,
+                idCard,
+                "Fujian",
+                "Putian",
+                "No. 1 Example Road");
+    }
+
+    /**
+     * Builds a request with configurable nested address fields.
+     */
+    private String requestWithAddress(
+            String nickname,
+            Integer score,
+            String idCard,
+            String province,
+            String city,
+            String detail) {
         String nicknameJson = nickname == null ? "null" : "\"" + nickname + "\"";
         String scoreJson = score == null ? "null" : score.toString();
 
@@ -220,9 +263,20 @@ class DataValidationDemoApplicationTests {
                   "phone": "13812345678",
                   "nickname": %s,
                   "score": %s,
-                  "idCard": "%s"
+                  "idCard": "%s",
+                  "address": {
+                    "province": "%s",
+                    "city": "%s",
+                    "detail": "%s"
+                  }
                 }
-                """.formatted(nicknameJson, scoreJson, idCard);
+                """.formatted(
+                        nicknameJson,
+                        scoreJson,
+                        idCard,
+                        province,
+                        city,
+                        detail);
     }
 
     /**
