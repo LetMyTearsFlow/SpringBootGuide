@@ -1,6 +1,6 @@
 package org.cqlin.mybatisbasicdemo;
 
-import org.cqlin.mybatisbasicdemo.mapper.SingleParameterMapper;
+import org.cqlin.mybatisbasicdemo.mapper.ParameterMapper;
 import org.cqlin.mybatisbasicdemo.vo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +15,18 @@ import java.util.Map;
 public class SingleParameterMyBatisTests {
 
     @Autowired
-    SingleParameterMapper singleParameterMapper;
+    ParameterMapper parameterMapper;
 
     @Test
     void testAddUser() {
         User user = new User(-1, "shuaijiamo", 67);
-        singleParameterMapper.addUser(user);
+        parameterMapper.addUser(user);
     }
 
     @Test
     void testGetTheSecondUser() {
         List<Integer> list = Arrays.asList(0, 1);
-        User theSecondUser = singleParameterMapper.getTheSecondUser(list);
+        User theSecondUser = parameterMapper.getTheSecondUser(list);
         System.out.println(theSecondUser);
     }
 
@@ -35,6 +35,14 @@ public class SingleParameterMyBatisTests {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("name", "wangchuqin");
         userMap.put("age", 32);
-        singleParameterMapper.addUserMap(userMap);
+        parameterMapper.addUserMap(userMap);
+    }
+
+    @Test
+    void testGetUserWithMultipleParameters() {
+        Map<String, Object> userInfoMap = new HashMap<>();
+        userInfoMap.put("name", "zhangsan");
+        userInfoMap.put("age", 38);
+        parameterMapper.getUserWithMultipleParameters(1, userInfoMap);
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.cqlin.mybatisbasicdemo.mapper.SingleParameterMapper">
+<mapper namespace="org.cqlin.mybatisbasicdemo.mapper.ParameterMapper">
     <insert id="addUser">
         insert into user(name, age) values(#{name}, #{age})
     </insert>
@@ -16,5 +16,10 @@
         select id, name, age
         from user
         where id = #{id}
+    </select>
+    <select id="getUserWithMultipleParameters" resultType="org.cqlin.mybatisbasicdemo.vo.User">
+        SELECT id, name, age
+        FROM user
+        WHERE id = #{id} AND name = #{info.name} AND age = #{info.age}
     </select>
 </mapper>
