@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cqlin.mybatisreturndemo.mapper.UserReturnMapper">
+    <!-- TODO 6：在这里定义 resultMap，映射 id、user_name、age。 -->
+    <resultMap id="userMap" type="org.cqlin.mybatisreturndemo.model.User">
+        <id column="id" property="id"></id>
+        <result column="user_name" property="userName"></result>
+        <result column="age" property="age"></result>
+    </resultMap>
+    <!-- TODO 1：添加 countUsers，查询用户总数；选择单值 resultType。 -->
+    <select id="countUsers" resultType="java.lang.Long">
+        select count(*) from t_user
+    </select>
+
+    <!-- TODO 2：添加 findById，按 id 查询；用别名匹配 Java 属性。 -->
+    <select id="findById" resultType="org.cqlin.mybatisreturndemo.model.User">
+        select user_name userName, age, id from t_user where id = #{id}
+    </select>
+    <!-- TODO 3：添加 findByMinAge，age >= minAge，按 id 升序；思考 resultType 写什么。 -->
+    <select id="findByMinAge" resultType="org.cqlin.mybatisreturndemo.model.User">
+        select user_name userName, age, id from t_user where age >= #{minAge} order by id
+    </select>
+    <!-- TODO 4：添加 findRow，按 id 查询，返回键为 id、user_name、age 的单行 Map。 -->
+    <select id="findRow" resultType="java.util.Map">
+        select id, user_name, age from t_user where id = #{id}
+    </select>
+
+    <!-- TODO 5：添加 findAllAsMap，查询所有用户；同时完成接口中的注解。 -->
+    <select id="findAllAsMap" resultType="org.cqlin.mybatisreturndemo.model.User">
+        select user_name userName, age, id from t_user
+    </select>
+
+
+    <!-- TODO 6：添加 findWithResultMap，按 id 查询；引用 resultMap，不写列别名。 -->
+    <select id="findWithResultMap" resultMap="userMap">
+        select * from t_user where id = #{id}
+    </select>
+
+    <!-- TODO 7：添加 findAge，只查 age 列；选择支持空值的返回类型。 -->
+    <select id="findAge" resultType="java.lang.Integer">
+        select age from t_user where id = #{id}
+    </select>
+</mapper>
