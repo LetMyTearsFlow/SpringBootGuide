@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cqlin.mybatisjoindemo.mapper.JoinExerciseMapper">
+    <!-- 在 select 前定义需要的 resultMap。第 1 题允许 resultType；其余使用 resultMap。 -->
+
+    <!-- findOrderSummaries，联结 t_order 和 t_customer，按订单 id 升序。
+         返回 OrderSummary：orderId、orderNo、customerName。
+         可用 SQL 别名匹配 Java 属性，或者显式定义 resultMap。 -->
+    <resultMap id="OrderSummaryRM" type="org.cqlin.mybatisjoindemo.model.OrderSummary">
+        <id property="orderId" column="order_id"></id>
+        <result property="orderNo" column="order_no"></result>
+        <result property="customerName" column="customer_name"></result>
+    </resultMap>
+    <select id="findOrderSummaries" resultMap="OrderSummaryRM">
+        select o.id as order_id, o.order_no as order_no, c.customer_name as customer_name
+        from t_order o left join t_customer c
+        on o.customer_id=c.id
+        order by o.id
+    </select>
+
+    <!-- findOrderWithCustomer，按订单 id 查询，使用 association 映射 customer。
+         Order：id、orderNo、customer；Customer：id、customerName。
+         不要求填充 items，也不填充 customer.orders；不存在的订单返回 null。 -->
+    <resultMap id="OrderRM" type="org.cqlin.mybatisjoindemo.model.Order">
+        <id column="order_id" property="id"></id>
+        <result column="order_no" property="orderNo"></result>
+        <association property="customer" javaType="org.cqlin.mybatisjoindemo.model.Customer">
+            <id column="c_id" property="id"></id>
+            <result column="c_name" property="customerName"></result>
+        </association>
+    </resultMap>
+    <select id="findOrderWithCustomer" resultMap="OrderRM">
+        select o.id as order_id, o.order_no as order_no,
+        c.customer_name as c_name, c.id as c_id
+        from t_order o left join t_customer c on o.customer_id=c.id
+        where o.id=#{id}
+    </select>
+
+    <!-- findCustomerWithOrders，从客户出发 LEFT JOIN 订单，按订单 id 升序。
+         Customer：id、customerName、orders；orders 中每个 Order：id、orderNo。
+         不填充每个订单的 customer 和 items；无订单客户保留，orders 为空列表。
+         不存在的客户返回 null。思考父子两层的 id 和 notNullColumn。 -->
+    <resultMap id="CustomerRM" type="org.cqlin.mybatisjoindemo.model.Customer">
+        <id column="c_id" property="id"></id>
+        <result column="c_name" property="customerName"></result>
+        <collection property="orders" ofType="org.cqlin.mybatisjoindemo.model.Order">
+            <id column="o_id" property="id"></id>
+            <result column="o_no" property="orderNo"></result>
+        </collection>
+    </resultMap>
+    <select id="findCustomerWithOrders" resultMap="CustomerRM">
+        select c.id c_id, c.customer_name c_name,
+        o.id o_id, o.order_no o_no
+        from t_customer c left join t_order o
+        on c.id=o.customer_id
+        where c.id=#{id}
+        order by c.id
+    </select>
+
+    <!-- findAllOrderDetails，联结客户并 LEFT JOIN 明细，按订单 id、明细 id 升序。
+         Order：id、orderNo、customer、items；Customer：id、customerName。
+         OrderItem：id、productName、quantity；不填充 customer.orders。
+         同一订单只返回一个对象，无明细订单的 items 为空列表。
+         使用 association + collection，并为每层定义 id。
+         建议别名：o_id、o_no、c_id、c_name、i_id、i_name、i_quantity。 -->
+    <resultMap id="AllRM" type="org.cqlin.mybatisjoindemo.model.Order">
+        <id column="o_id" property="id"></id>
+        <result column="o_no" property="orderNo"></result>
+        <association property="customer">
+            <id column="c_id" property="id"></id>
+            <result column="c_name" property="customerName"></result>
+        </association>
+        <collection property="items" ofType="org.cqlin.mybatisjoindemo.model.OrderItem">
+            <id column="i_id" property="id"></id>
+            <result column="i_product_name" property="productName"></result>
+            <result column="i_quantity" property="quantity"></result>
+        </collection>
+    </resultMap>
+    <select id="findAllOrderDetails" resultMap="AllRM">
+        select o.id as o_id, o.order_no as o_no,
+        c.id as c_id, c.customer_name as c_name,
+        i.id as i_id, i.product_name as i_product_name, i.quantity as i_quantity
+        from t_order o
+        left join t_order_item i on o.id=i.order_id
+        left join t_customer c on o.customer_id=c.id
+        order by o.id asc, i.id asc
+    </select>
+
+</mapper>
