@@ -31,6 +31,7 @@
         <module>ValueDemo</module>
         <module>RestfulMarketDemo</module>
         <module>MyBatisJoinDemo</module>
+        <module>MyBatisStepQueryDemo</module>
     </modules>
 
     <url/>

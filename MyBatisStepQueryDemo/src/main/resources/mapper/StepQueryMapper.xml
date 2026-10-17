@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cqlin.mybatisstepquerydemo.mapper.StepQueryMapper">
+    <!-- 1：实现 findDepartmentById 和 findEmployeeWithDepartment。
+         定义员工 resultMap，映射 id、employeeName、departmentId。
+         association 的 property=department，column 传员工查询结果中的部门编号，
+         select 指向 findDepartmentById。先查员工，再查部门；不要 JOIN。
+         员工不存在返回 null，部门编号为 NULL 时 department 为 null。
+    -->
+    <select id="findDepartmentById" resultType="org.cqlin.mybatisstepquerydemo.model.Department">
+        select * from t_department where id = #{id}
+    </select>
+    <resultMap id="EmployeeWithDepartmentRM" type="org.cqlin.mybatisstepquerydemo.model.Employee">
+        <id property="id" column="id"></id>
+        <result property="departmentId" column="department_id"></result>
+        <result property="employeeName" column="employee_name"></result>
+        <association select="findDepartmentById" property="department" column="department_id"></association>
+    </resultMap>
+    <select id="findEmployeeWithDepartment" resultMap="EmployeeWithDepartmentRM">
+        select * from t_employee where id = #{id}
+    </select>
+
+
+    <!-- 2：实现 findEmployeesByDepartmentId 和 findDepartmentWithEmployees。
+         定义部门 resultMap，映射 id、departmentName。
+         collection 的 property=employees，column 传部门查询结果中的 id，
+         select 指向 findEmployeesByDepartmentId。员工查询按 id 升序。
+         只查员工基础字段，不再加载部门，避免循环调用。
+    -->
+    <resultMap id="DepartmentWithEmployeesRM" type="org.cqlin.mybatisstepquerydemo.model.Department">
+        <id property="id" column="id"></id>
+        <result property="departmentName" column="department_name"></result>
+        <collection property="employees" column="id" select="findEmployeesByDepartmentId"></collection>
+    </resultMap>
+    <select id="findDepartmentWithEmployees" resultMap="DepartmentWithEmployeesRM">
+        select * from t_department where id = #{id}
+    </select>
+    <select id="findEmployeesByDepartmentId" resultType="org.cqlin.mybatisstepquerydemo.model.Employee">
+        select * from t_employee where department_id = #{departmentId} order by id
+    </select>
+
+
+    <!-- 3：实现 findAllEmployeesWithDepartment，复用 1 的 resultMap。
+         员工按 id 升序，观察控制台执行了几次 SQL，并解释一级缓存的作用。
+    -->
+    <select id="findAllEmployeesWithDepartment" resultMap="EmployeeWithDepartmentRM">
+        select * from t_employee order by id
+    </select>
+
+</mapper>
