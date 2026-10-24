@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cqlin.dynamicsqldemo.mapper.DynamicSqlMapper">
+    <!--
+    在这里逐题添加映射语句，id 与接口方法名一致。
+    查询 resultType：org.cqlin.dynamicsqldemo.model.Employee
+    表：t_employee；字段：id, employee_name, department_id, salary, status。
+    所有查询按 id 升序；参数使用 #{} 绑定。
+    姓名/status 的“空”指 null 或空串；无需处理纯空白字符串。
+    -->
+    <!--1-->
+    <select id="search" resultType="org.cqlin.dynamicsqldemo.model.Employee">
+        select * from t_employee
+        <where>
+            <if test="name != null">and employee_name like concat('%', #{name}, '%')</if>
+            <if test="departmentId != null">and department_id = #{departmentId}</if>
+            <if test="minSalary != null">and salary &gt;= #{minSalary}</if>
+        </where>
+    </select>
+    <select id="chooseSearch" resultType="org.cqlin.dynamicsqldemo.model.Employee">
+        select * from t_employee
+        <where>
+            <choose>
+                <when test="name != null and '' != name ">employee_name like concat('%', #{name}, '%')</when>
+                <when test="departmentId != null">department_id = #{departmentId}</when>
+                <otherwise>status = 'ACTIVE'</otherwise>
+            </choose>
+        </where>
+    </select>
+    <select id="findByIds" resultType="org.cqlin.dynamicsqldemo.model.Employee">
+        select * from t_employee
+        <choose>
+            <when test="ids != null and !ids.isEmpty()">
+                where id in
+                <foreach collection="ids" open="(" close=")" separator="," item="id">
+                    #{id}
+                </foreach>
+            </when>
+            <otherwise>
+                where 1 = 0
+            </otherwise>
+        </choose>
+    </select>
+    <update id="updateSelective">
+        <choose>
+            <when test="(employeeName != null and employeeName != '') or departmentId != null or salary != null or status != null">
+                update t_employee
+                <set>
+                    <if test="employeeName != null and employeeName != ''">
+                        employee_name = #{employeeName},
+                    </if>
+                    <if test="departmentId != null">
+                        department_id = #{departmentId},
+                    </if>
+                    <if test="salary != null">
+                        salary = #{salary},
+                    </if>
+                    <if test="status != null">
+                        status = #{status},
+                    </if>
+                </set>
+                where id = #{id}
+            </when>
+            <otherwise>
+                update t_employee set id = #{id} where 1=0
+            </otherwise>
+        </choose>
+    </update>
+    <select id="trimSearch" resultType="org.cqlin.dynamicsqldemo.model.Employee">
+        select * from t_employee
+        <trim prefix="where" prefixOverrides="and">
+            <if test="departmentId != null">
+                and department_id = #{departmentId}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </trim>
+    </select>
+    <!--6：batchInsert，foreach 生成多行 VALUES。-->
+    <insert id="batchInsert">
+        insert into t_employee (id, employee_name, department_id, salary, status)
+        <foreach collection="employees" item="employee" separator="," open="values">
+            (#{employee.id}, #{employee.employeeName}, #{employee.departmentId}, #{employee.salary}, #{employee.status})
+        </foreach>
+    </insert>
+    <select id="bindSearch" resultType="org.cqlin.dynamicsqldemo.model.Employee">
+        select * from t_employee
+        <where>
+            <if test="name != null and name != ''">
+                <bind name="namePattern" value="'%'+ name + '%'"></bind>
+                employee_name like #{namePattern}
+            </if>
+        </where>
+    </select>
+</mapper>

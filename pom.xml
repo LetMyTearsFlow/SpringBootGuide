@@ -32,6 +32,7 @@
         <module>RestfulMarketDemo</module>
         <module>MyBatisJoinDemo</module>
         <module>MyBatisStepQueryDemo</module>
+        <module>DynamicSQLDemo</module>
     </modules>
 
     <url/>
